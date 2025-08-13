@@ -1,0 +1,1 @@
+AUTH_URL = "https://accounts.spotify.com/authorize?client_id=e762fb45d4bc41419ef7a3f640970e2e&response_type=code&redirect_uri=https://192.168.0.39:3000&"
