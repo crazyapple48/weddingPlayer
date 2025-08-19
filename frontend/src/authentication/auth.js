@@ -11,11 +11,30 @@ export function useLogin(code) {
             const result = await axios.post("https://192.168.0.39:3000/login", {
             code,
              })
-             console.log(result);
             return result
         },
     })
+    
+}
 
+export function useRefresh() {
+    const queryClient = useQueryClient();
+
+    const refreshToken = queryClient.getQueryData(['accessToken']).data.refreshToken
+
+    return useQuery({
+        queryKey: ["refresh-token"],
+        queryFn: async () => {
+            const result = await axios.post("https://192.168.0.39:3000/refresh", { refreshToken })
+            return result
+        },
+        refetchInterval: 1000 * 60 * 59,
+        onSuccess: (data) => {
+            queryClient.setQueryData(["access-token"].accessToken, refreshData.data.accessToken)
+        },
+        enabled: !!refreshToken
+    })
+  
 }
 
 export function useGetPlaylists() {
@@ -23,7 +42,6 @@ export function useGetPlaylists() {
 
     const accessToken = queryClient.getQueryData(["accessToken"]).data.accessToken
 
-    console.log(accessToken);
 
     return useQuery({ 
         queryKey: ['playlists'], 
