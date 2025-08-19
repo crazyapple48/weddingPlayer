@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Dashboard from './dashboard'
 import Login from './login'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -5,8 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 const code = new URLSearchParams(window.location.search).get('code')
 
+const queryClient = new QueryClient()
+
 function App() {
-  return code ? <Dashboard code={code} /> : <Login />
-}
+  return (
+    <QueryClientProvider client={queryClient}>
+      {code ? <Dashboard code={code} /> : <Login />}
+    </QueryClientProvider>
+)}
 
 export default App
