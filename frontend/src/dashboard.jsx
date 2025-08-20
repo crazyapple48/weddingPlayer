@@ -1,23 +1,27 @@
 import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { Container } from 'react-bootstrap';
 import axios from 'axios'
-import { useGetPlaylists, useLogin, useRefresh } from './authentication/auth';
+import { useGetPlaylists, useLogin, useSpotifyToken } from './authentication/auth';
+import { useEffect } from 'react';
 
 function Dashboard({ code }) {
 
     const queryClient = useQueryClient();
-
-    const { data, isError: loginIsError, error: loginError } = useLogin(code);
-
-    const { data: refreshData, isError: refreshIsError, error: refreshError } = useRefresh()
     
-    if (loginIsError) {
-        return <span>Error: {loginError.message}</span>
-    }
+    
+    const loginMutation = useLogin(code);
 
-    // if (refreshIsError) {
-    //     return <span>Error: {refreshError.message}</span>
-    // }
+    useEffect(() => {
+        if (code) {
+            loginMutation.mutate()
+        }
+    }, [code])
+    
+    const tokenQuery = useSpotifyToken();
+
+    if (tokenQuery.isError) {
+        return <span>Error: {tokenQuery.error.message}</span>
+    }
 
     const { isPending: playlistPending, isError: playlistIsError, data: playlistData,  error: playlistError } = useGetPlaylists()
 
