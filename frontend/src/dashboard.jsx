@@ -1,21 +1,8 @@
-import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { Container } from 'react-bootstrap';
-import axios from 'axios'
-import { useGetPlaylists, useLogin, useSpotifyToken } from './authentication/auth';
-import { useEffect } from 'react';
+import { Button, Container } from 'react-bootstrap';
+import { useGetPlaylists, useSpotifyToken } from './authentication/auth';
 
-function Dashboard({ code }) {
-
-    const queryClient = useQueryClient();
-    
-    
-    const loginMutation = useLogin(code);
-
-    useEffect(() => {
-        if (code) {
-            loginMutation.mutate()
-        }
-    }, [code])
+function Dashboard() {
+  
     
     const tokenQuery = useSpotifyToken();
 
@@ -34,11 +21,32 @@ function Dashboard({ code }) {
     }
 
     const playlists = playlistData.data.items
+
+    const filteredPlaylists = playlists.filter((value, index, arr) => {
+        switch (value.name) {
+            case "Wedding Jams":
+                return true;
+            case "Cocktail hour":
+                return true;
+            case "Wedding Jams 2":
+                return true;
+            case "Dessert Jams":
+                return true;
+            case "Dinner":
+                return true;
+            case "They Kiss!":
+                return true;
+            case "Set-up":
+                return true;
+            case "Pre-Ceremony":
+                return true;
+        }
+    })
     
     return (
-        <Container>
-            {playlists.map((playlist) => {
-                return <p key={playlist.href}>{playlist.name}</p>
+        <Container className="d-flex flex-column w-50 h-100">
+            {filteredPlaylists.map((playlist) => {
+                return <Button key={playlist.href} variant='outline-success' >{playlist.name}</Button>
             })}
         </Container>
     )

@@ -14,15 +14,21 @@ export function useLogin(code) {
         },
         onSuccess: (response) => {
             const tokenData = response.data;
-            queryClient.setQueryData(["spotify-token"], {
+
+            const token = {
                 accessToken: tokenData.accessToken,
                 refreshToken: tokenData.refreshToken,
                 expiresAt: Date.now() + (tokenData.expiresIn * 1000)
-            });
+            }
+            queryClient.setQueryData(["spotify-token"], token);
+
+            localStorage.setItem("spotify-token", JSON.stringify(token))
+
+            window.history.replaceState({}, document.title, "/")
         },
         onError: (error) => {
             console.error(error);
-            window.location.href = "/login"
+            // window.location.href = "/login"
         }
     })
     
@@ -65,7 +71,7 @@ export function useSpotifyToken(refreshToken) {
             console.log("hi")
 
             if (!token) {
-                window.location.href = "/login"
+                // window.location.href = "/login"
                 return null
             }
 
@@ -79,6 +85,10 @@ export function useSpotifyToken(refreshToken) {
                 expiresAt: Date.now() + (data.expiresIn * 1000)
             };
         },
+        onSuccess: (newToken) => {
+            queryClient.setQueryData(["spotify-token"], newToken);
+            localStorage.setItem("spotify-token", JSON.stringify(newToken))
+        },
         enabled: !!token,
         refetchInterval: (data) => {
             if (!data) {
@@ -90,8 +100,9 @@ export function useSpotifyToken(refreshToken) {
             return msUntilExpiry > 60000 ? msUntilExpiry - 60000 : 0;
         },
         refetchIntervalInBackground: true,
-        onError: () => {
-            window.location.href = "/login"
+        onError: (err) => {
+            console.error(err)
+            // window.location.href = "/login"
         }
     })
 }
