@@ -1,7 +1,6 @@
 import { useGetPlaylists, useSpotifyToken } from "./authentication/auth";
 import axios from "axios";
 
-
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
@@ -48,16 +47,24 @@ function Dashboard() {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center bg-black h-screen">
-      <div className="">
-        <h1 className="text-3xl font-bold underline text-white">Wedding Playlists</h1>
-      </div>
-      <div className="">
-        <div className="">
+    <>
+      <div className="grid grid-cols-[2fr_1fr] items-center justify-center bg-black h-screen">
+        <div className="col-2 row-2 justify-self-end self-start pr-3">
+          <select className="bg-[#8833ff] p-2 rounded-lg">
+            <option className="bg-[#8833ff] rounded-lg">My Device</option>
+            <option className="bg-[#8833ff] rounded-lg">My Device</option>
+          </select>
+        </div>
+        <div className="col-1 row-1 col-span-2">
+          <h1 className="text-3xl font-bold underline text-white justify-self-center">
+            Wedding Playlists
+          </h1>
+        </div>
+        <div className="col-1 row-2 flex flex-col self-start justify-self-center">
           {filteredPlaylists.map((playlist) => {
             return (
               <button
-                className="text-white"
+                className="rounded-lg bg-[#aa33aa] p-3 my-1"
                 key={playlist.href}
                 onClick={() =>
                   playPlaylist(playlist.uri, tokenQuery.data.accessToken)
@@ -69,7 +76,7 @@ function Dashboard() {
           })}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
