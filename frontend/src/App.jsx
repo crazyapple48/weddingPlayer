@@ -1,9 +1,9 @@
 import Dashboard from "./dashboard";
 import Login from "./login";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useLogin } from "./authentication/auth";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import './css/app.css'
 
 const code = new URLSearchParams(window.location.search).get("code");
 

@@ -1,6 +1,6 @@
-import { Button, Container } from "react-bootstrap";
 import { useGetPlaylists, useSpotifyToken } from "./authentication/auth";
 import axios from "axios";
+
 
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
@@ -48,19 +48,28 @@ function Dashboard() {
   });
 
   return (
-    <Container className="d-flex flex-column w-50 h-100">
-      {filteredPlaylists.map((playlist) => {
-        return (
-          <Button
-            key={playlist.href}
-            variant="outline-success"
-            onClick={() => playPlaylist(playlist.uri, tokenQuery.data.accessToken)}
-          >
-            {playlist.name}
-          </Button>
-        );
-      })}
-    </Container>
+    <div className="flex flex-col justify-center items-center bg-black h-screen">
+      <div className="">
+        <h1 className="text-3xl font-bold underline text-white">Wedding Playlists</h1>
+      </div>
+      <div className="">
+        <div className="">
+          {filteredPlaylists.map((playlist) => {
+            return (
+              <button
+                className="text-white"
+                key={playlist.href}
+                onClick={() =>
+                  playPlaylist(playlist.uri, tokenQuery.data.accessToken)
+                }
+              >
+                {playlist.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -70,15 +79,15 @@ async function playPlaylist(href, accessToken) {
   const endpoint = "https://api.spotify.com/v1/me/player/play";
 
   const response = await axios.put(
-    (`${endpoint}`),
-    ({
+    `${endpoint}`,
+    {
       context_uri: href,
-    }),
-    ({
+    },
+    {
       headers: {
         Authorization: "Bearer " + accessToken,
       },
-    })
+    }
   );
 
   return response;
