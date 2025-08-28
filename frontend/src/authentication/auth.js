@@ -121,7 +121,7 @@ export function useGetDevices() {
             return result
         },
         enabled: !!accessToken,
-        refetchInterval: 1000 * 5,
+        refetchInterval: 1000 * 15,
         refetchIntervalInBackground: true
     })
 }

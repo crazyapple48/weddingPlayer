@@ -20,6 +20,7 @@ function Dashboard() {
     isError: devicesIsError,
     data: devicesData,
     error: devicesError,
+    refetch: refetchDevices
   } = useGetDevices();
 
   const {
@@ -80,7 +81,7 @@ function Dashboard() {
           {devicesPending ? (
             <span className="text-white">Loading....</span>
           ) : (
-            <select className="bg-[#8833ff] p-2 rounded-lg" onChange={e => setPlaybackDevice(e.target.value)}>
+            <select className="bg-[#8833ff] p-2 rounded-lg" onChange={e => setPlaybackDevice(e.target.value)} onFocus={e => refetchDevices()}>
               {devices.map((device) => {
                 return <option key={device.id} value={device.id}>{device.name}</option>
               })}
