@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useGetDevices,
   useGetPlaylists,
@@ -9,7 +9,7 @@ import axios from "axios";
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
-  const [playbackDevice, setPlaybackDevice ] = useState();
+  const [playbackDevice, setPlaybackDevice ] = useState("");
 
   if (tokenQuery.isError) {
     return <span>Error: {tokenQuery.error.message}</span>;
@@ -29,6 +29,15 @@ function Dashboard() {
     error: playlistError,
   } = useGetPlaylists();
 
+  const playlists = playlistData?.data?.items;
+  const devices = devicesData?.data?.devices;
+
+  useEffect(() => {
+    if (!!devices && !playbackDevice) {
+      setPlaybackDevice(devices[0].id)
+    }
+  }, [devices])
+
   if (playlistIsError) {
     return <span>Error: {playlistError.message}</span>;
   }
@@ -37,12 +46,11 @@ function Dashboard() {
     return <span>Error: {devicesError.message}</span>
   }
 
-  const playlists = playlistData?.data?.items;
-  const devices = devicesData?.data?.devices;
 
   if (!devices) {
     return <span>Something went wrong</span>
   }
+
 
   const filteredPlaylists = playlists?.filter((value, index, arr) => {
     switch (value.name) {
