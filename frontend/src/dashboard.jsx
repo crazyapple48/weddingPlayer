@@ -5,11 +5,12 @@ import {
   useSpotifyToken,
 } from "./authentication/auth";
 import axios from "axios";
+import Player from "./player";
 
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
-  const [playbackDevice, setPlaybackDevice ] = useState("");
+  const [playbackDevice, setPlaybackDevice] = useState("");
 
   if (tokenQuery.isError) {
     return <span>Error: {tokenQuery.error.message}</span>;
@@ -20,7 +21,7 @@ function Dashboard() {
     isError: devicesIsError,
     data: devicesData,
     error: devicesError,
-    refetch: refetchDevices
+    refetch: refetchDevices,
   } = useGetDevices();
 
   const {
@@ -31,27 +32,25 @@ function Dashboard() {
   } = useGetPlaylists();
 
   const playlists = playlistData?.data?.items;
-  const devices = devicesData?.data?.devices;
+  const devices = devicesData?.data?.devices ?? [];
 
   useEffect(() => {
-    if (!!devices && !playbackDevice) {
-      setPlaybackDevice(devices[0].id)
+    if (devices.length > 0 && !playbackDevice) {
+      setPlaybackDevice(devices[0].id);
     }
-  }, [devices])
+  }, [devices]);
 
   if (playlistIsError) {
     return <span>Error: {playlistError.message}</span>;
   }
 
   if (devicesIsError) {
-    return <span>Error: {devicesError.message}</span>
+    return <span>Error: {devicesError.message}</span>;
   }
-
 
   if (!devices) {
-    return <span>Something went wrong</span>
+    return <span>Something went wrong</span>;
   }
-
 
   const filteredPlaylists = playlists?.filter((value, index, arr) => {
     switch (value.name) {
@@ -76,14 +75,22 @@ function Dashboard() {
 
   return (
     <>
-      <div className="grid grid-cols-[2fr_1fr] items-center justify-center bg-black h-screen">
+      <div className="grid grid-cols-[2fr_1fr] grid-rows-[2fr_1fr_6fr] items-center justify-center bg-black h-screen">
         <div className="col-2 row-2 justify-self-end self-start pr-3">
           {devicesPending ? (
             <span className="text-white">Loading....</span>
           ) : (
-            <select className="bg-[#8833ff] p-2 rounded-lg" onChange={e => setPlaybackDevice(e.target.value)} onFocus={e => refetchDevices()}>
+            <select
+              className="bg-[#8833ff] p-2 rounded-lg"
+              onChange={(e) => setPlaybackDevice(e.target.value)}
+              onFocus={(e) => refetchDevices()}
+            >
               {devices.map((device) => {
-                return <option key={device.id} value={device.id}>{device.name}</option>
+                return (
+                  <option key={device.id} value={device.id}>
+                    {device.name}
+                  </option>
+                );
               })}
             </select>
           )}
@@ -93,7 +100,7 @@ function Dashboard() {
             Wedding Playlists
           </h1>
         </div>
-        <div className="col-1 row-2 flex flex-col self-start justify-self-center">
+        <div className="col-1 row-2 row-span-2 flex flex-col self-start justify-self-center">
           {playlistPending ? (
             <span className="text-white">Loading...</span>
           ) : (
@@ -103,7 +110,11 @@ function Dashboard() {
                   className="rounded-lg bg-[#aa33aa] p-3 my-1"
                   key={playlist.href}
                   onClick={() =>
-                    playPlaylist(playlist.uri, tokenQuery.data.accessToken, playbackDevice)
+                    playPlaylist(
+                      playlist.uri,
+                      tokenQuery.data.accessToken,
+                      playbackDevice
+                    )
                   }
                 >
                   {playlist.name}
@@ -111,6 +122,9 @@ function Dashboard() {
               );
             })
           )}
+        </div>
+        <div className="flex flex-col justify-center w-full justify-self-center self-start col-2 row-3">
+          <Player />
         </div>
       </div>
     </>
