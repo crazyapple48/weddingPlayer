@@ -4,9 +4,9 @@ function PlayerButton({ icon, isPlaying }) {
 
     switch (icon) {
         case "play":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={!isPlaying} onClick={() => console.log("Play")}><IoMdPlay /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={isPlaying} onClick={() => console.log("Play")}><IoMdPlay /></button>
         case "pause":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={isPlaying}><IoMdPause /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={!isPlaying}><IoMdPause /></button>
         case "forward":
             return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdSkipForward /></button>
         case "backward":
