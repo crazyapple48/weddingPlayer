@@ -1,22 +1,21 @@
 import { IoMdPause, IoMdPlay, IoMdSkipBackward, IoMdSkipForward, IoMdVolumeHigh, IoMdVolumeLow } from "react-icons/io"
 
-function PlayerButton({ icon }) {
+function PlayerButton({ icon, isPlaying }) {
 
     switch (icon) {
         case "play":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square"><IoMdPlay /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={!isPlaying} onClick={() => console.log("Play")}><IoMdPlay /></button>
         case "pause":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square"><IoMdPause /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={isPlaying}><IoMdPause /></button>
         case "forward":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square"><IoMdSkipForward /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdSkipForward /></button>
         case "backward":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square"><IoMdSkipBackward /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdSkipBackward /></button>
         case "volumeUp":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square"><IoMdVolumeHigh /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdVolumeHigh /></button>
         case "volumeDown":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square"><IoMdVolumeLow /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdVolumeLow /></button>
     }
-
 }
 
 export default PlayerButton

@@ -125,3 +125,26 @@ export function useGetDevices() {
         refetchIntervalInBackground: true
     })
 }
+
+export function useGetCurrentlyPlayingTrack() {
+  const queryClient = useQueryClient();
+
+  const { data } = useSpotifyToken();
+
+  const accessToken = data?.accessToken;
+
+  return useQuery({
+    queryKey: ["playbackTrack"],
+    queryFn: async () => {
+      const result = await axios.get("https://api.spotify.com/v1/me/player/currently-playing", {
+        headers: {
+          Authorization: "Bearer " + accessToken
+        }
+      });
+      return result
+    },
+    enabled: !!accessToken,
+    refetchInterval: 1000 * 15,
+    refetchIntervalInBackground: true
+  })
+}

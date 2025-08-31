@@ -107,7 +107,7 @@ function Dashboard() {
             filteredPlaylists.map((playlist) => {
               return (
                 <button
-                  className="rounded-lg bg-[#aa33aa] p-3 my-1"
+                  className="rounded-lg bg-fuchsia-500 p-3 my-1 hover:bg-fuchsia-800 disabled:opacity-25 active:scale-75"
                   key={playlist.href}
                   onClick={() =>
                     playPlaylist(
