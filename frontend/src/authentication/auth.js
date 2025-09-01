@@ -85,6 +85,8 @@ export function useGetPlaylists() {
   const { data } = useSpotifyToken();
 
   const accessToken = data?.accessToken;
+  const playlistOrder = ["Set-up", "Pre-Ceremony", "They Kiss!", "Cocktail hour", "Dinner", "Wedding Jams", "Dessert Jams", "Wedding Jams 2"]
+
 
   return useQuery({
     queryKey: ["playlists"],
@@ -100,6 +102,27 @@ export function useGetPlaylists() {
       return result;
     },
     enabled: !!accessToken,
+    select: (data) => {
+
+      if (!data || !Array.isArray(data.data.items)) {
+        return {...data, data: { items: []}}
+      } 
+
+      const items = data.data.items;
+
+      const orderMap = playlistOrder.reduce((map, name, idx) => {
+        map[name] = idx;
+        return map;
+      }, {});
+
+      const filteredItems = items.filter(p => orderMap[p.name] !== undefined)
+
+      return {...data, data: {items: filteredItems.sort((a, b) => {
+        const aIndex = orderMap[a.name] ?? Infinity;
+        const bIndex = orderMap[b.name] ?? Infinity;
+        return aIndex - bIndex;
+    })}};
+  }
   });
 }
 

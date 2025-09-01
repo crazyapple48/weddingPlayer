@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  useGetDevices,
-  useGetPlaylists,
-  useSpotifyToken,
-} from "./authentication/auth";
-import axios from "axios";
+import { useGetDevices, useGetPlaylists, useSpotifyToken } from "./authentication/auth";
 import Player from "./player";
 import { useGetCurrentlyPlayingTrack } from "./authentication/auth";
 import { usePlayPlaylist } from "./queries/queries";
@@ -14,7 +9,6 @@ function Dashboard() {
 
   const [playbackDevice, setPlaybackDevice] = useState("");
   const [isDevices, setIsDevices] = useState(false);
-  // const [isPlaying, setIsPlaying] = useState(false);
 
   if (tokenQuery.isError) {
     return <span>Error: {tokenQuery.error.message}</span>;
@@ -52,19 +46,6 @@ function Dashboard() {
     }
   }, [devices]);
   
-  // useEffect(() => {
-  //   if (!playbackState.data) return;
-
-  //   if (playbackState.data.data.is_playing) {
-  //    console.log("Is playing?: " + playbackState.data.data.is_playing)
-
-  //     setIsPlaying(true);
-  //   } 
-  //   else {
-  //     setIsPlaying(false);
-  //   }
-  // }, [playbackState.data, isPlaying])
-
   if (playlistIsError) {
     return <span>Error: {playlistError.message}</span>;
   }
@@ -77,26 +58,35 @@ function Dashboard() {
     return <span>Something went wrong</span>;
   }
 
-  const filteredPlaylists = playlists?.filter((value, index, arr) => {
-    switch (value.name) {
-      case "Wedding Jams":
-        return true;
-      case "Cocktail hour":
-        return true;
-      case "Wedding Jams 2":
-        return true;
-      case "Dessert Jams":
-        return true;
-      case "Dinner":
-        return true;
-      case "They Kiss!":
-        return true;
-      case "Set-up":
-        return true;
-      case "Pre-Ceremony":
-        return true;
-    }
-  });
+  if (!playlists) {
+    return <span>There are no playlists. Sorry bruh</span>
+  }
+  // const playlistOrder = ["Set-up", "Pre-Ceremony", "They Kiss!", "Cocktail hour", "Dinner", "Wedding Jams", "Dessert Jams", "Wedding Jams 2"]
+
+  // const orderedPlaylists = playlistOrder.map((playlist) => {
+    
+  // })
+
+  // const filteredPlaylists = playlists?.filter((value, index, arr) => {
+  //   switch (value.name) {
+  //     case "Wedding Jams":
+  //       return true;
+  //     case "Cocktail hour":
+  //       return true;
+  //     case "Wedding Jams 2":
+  //       return true;
+  //     case "Dessert Jams":
+  //       return true;
+  //     case "Dinner":
+  //       return true;
+  //     case "They Kiss!":
+  //       return true;
+  //     case "Set-up":
+  //       return true;
+  //     case "Pre-Ceremony":
+  //       return true;
+  //   }
+  // });
 
   return (
     <>
@@ -129,7 +119,7 @@ function Dashboard() {
           {playlistPending ? (
             <span className="text-white">Loading...</span>
           ) : (
-            filteredPlaylists.map((playlist) => {
+            playlists.map((playlist) => {
               return (
                 playlistPending ? <button>Playing Playlist....</button> :
                 <button
@@ -159,20 +149,3 @@ function Dashboard() {
 
 export default Dashboard;
 
-// async function playPlaylist(href, accessToken, device) {
-//   const endpoint = `https://api.spotify.com/v1/me/player/play?device_id=${device}`;
-
-//   const response = await axios.put(
-//     `${endpoint}`,
-//     {
-//       context_uri: href,
-//     },
-//     {
-//       headers: {
-//         Authorization: "Bearer " + accessToken,
-//       },
-//     }
-//   );
-
-//   return response;
-// }
