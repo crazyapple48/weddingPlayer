@@ -11,6 +11,7 @@ function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
   const [playbackDevice, setPlaybackDevice] = useState("");
+  const [isDevices, setIsDevices] = useState(false);
 
   if (tokenQuery.isError) {
     return <span>Error: {tokenQuery.error.message}</span>;
@@ -34,8 +35,11 @@ function Dashboard() {
   const playlists = playlistData?.data?.items;
   const devices = devicesData?.data?.devices ?? [];
 
+
+
   useEffect(() => {
     if (devices.length > 0 && !playbackDevice) {
+      setIsDevices(true);
       setPlaybackDevice(devices[0].id);
     }
   }, [devices]);
@@ -107,7 +111,7 @@ function Dashboard() {
             filteredPlaylists.map((playlist) => {
               return (
                 <button
-                  className="rounded-lg bg-fuchsia-500 p-3 my-1 hover:bg-fuchsia-800 disabled:opacity-25 active:scale-75"
+                  className="rounded-lg bg-fuchsia-500 p-3 my-1 hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"
                   key={playlist.href}
                   onClick={() =>
                     playPlaylist(
@@ -116,6 +120,7 @@ function Dashboard() {
                       playbackDevice
                     )
                   }
+                  disabled={!isDevices}
                 >
                   {playlist.name}
                 </button>
@@ -124,7 +129,7 @@ function Dashboard() {
           )}
         </div>
         <div className="flex flex-col justify-center w-full justify-self-center self-start col-2 row-3">
-          <Player />
+          <Player playbackDevice={playbackDevice} accessToken={tokenQuery.data.accessToken}/>
         </div>
       </div>
     </>

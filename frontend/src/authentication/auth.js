@@ -136,7 +136,7 @@ export function useGetCurrentlyPlayingTrack() {
   return useQuery({
     queryKey: ["playbackTrack"],
     queryFn: async () => {
-      const result = await axios.get("https://api.spotify.com/v1/me/player/currently-playing", {
+      const result = await axios.get("https://api.spotify.com/v1/me/player", {
         headers: {
           Authorization: "Bearer " + accessToken
         }
