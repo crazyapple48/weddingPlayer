@@ -38,7 +38,7 @@ export function usePlayPlaylist() {
     onMutate: async (variables) => {
       queryClient.setQueryData(["playbackTrack"], (old) => ({
         ...old,
-        data: { is_playing: true, context: { uri: variables.href } },
+        data: { ...old?.data, is_playing: true, context: { uri: variables.href } },
       }));
     },
     onSuccess: () => {
@@ -80,7 +80,7 @@ export function usePausePlaylist() {
     onMutate: async (variables) => {
       queryClient.setQueryData(["playbackTrack"], (old) => ({
         ...old,
-        data: { is_playing: false},
+        data: { ...old?.data, is_playing: false},
       }));
     },
     onSuccess: () => {
