@@ -35,10 +35,16 @@ export function usePlayPlaylist() {
 
       return response;
     },
+    onMutate: async (variables) => {
+      queryClient.setQueryData(["playbackTrack"], (old) => ({
+        ...old,
+        data: { is_playing: true, context: { uri: variables.href } },
+      }));
+    },
     onSuccess: () => {
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["playbackTrack"] });
-      }, 1000);
+      }, 1500);
     },
     onError: (error) => {
       console.error("Failed to play playlist: ", error);
@@ -71,10 +77,16 @@ export function usePausePlaylist() {
 
       return response;
     },
+    onMutate: async (variables) => {
+      queryClient.setQueryData(["playbackTrack"], (old) => ({
+        ...old,
+        data: { is_playing: false},
+      }));
+    },
     onSuccess: () => {
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["playbackTrack"] });
-      }, 1000);
+      }, 1500);
     },
     onError: (error) => {
       console.error("Failed to play playlist: ", error);
