@@ -6,12 +6,15 @@ import {
 } from "./authentication/auth";
 import axios from "axios";
 import Player from "./player";
+import { useGetCurrentlyPlayingTrack } from "./authentication/auth";
+import { usePlayPlaylist } from "./queries/queries";
 
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
   const [playbackDevice, setPlaybackDevice] = useState("");
   const [isDevices, setIsDevices] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
 
   if (tokenQuery.isError) {
     return <span>Error: {tokenQuery.error.message}</span>;
@@ -32,10 +35,15 @@ function Dashboard() {
     error: playlistError,
   } = useGetPlaylists();
 
+
+  const playbackState = useGetCurrentlyPlayingTrack();
+
   const playlists = playlistData?.data?.items;
   const devices = devicesData?.data?.devices ?? [];
-
-
+  const isPlaying = playbackState?.data?.data?.is_playing
+  
+  const playPlaylist = usePlayPlaylist();
+  
 
   useEffect(() => {
     if (devices.length > 0 && !playbackDevice) {
@@ -43,6 +51,19 @@ function Dashboard() {
       setPlaybackDevice(devices[0].id);
     }
   }, [devices]);
+  
+  // useEffect(() => {
+  //   if (!playbackState.data) return;
+
+  //   if (playbackState.data.data.is_playing) {
+  //    console.log("Is playing?: " + playbackState.data.data.is_playing)
+
+  //     setIsPlaying(true);
+  //   } 
+  //   else {
+  //     setIsPlaying(false);
+  //   }
+  // }, [playbackState.data, isPlaying])
 
   if (playlistIsError) {
     return <span>Error: {playlistError.message}</span>;
@@ -110,16 +131,16 @@ function Dashboard() {
           ) : (
             filteredPlaylists.map((playlist) => {
               return (
+                playlistPending ? <button>Playing Playlist....</button> :
                 <button
                   className="rounded-lg bg-fuchsia-500 p-3 my-1 hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"
                   key={playlist.href}
-                  onClick={() =>
-                    playPlaylist(
-                      playlist.uri,
-                      tokenQuery.data.accessToken,
-                      playbackDevice
-                    )
-                  }
+                  onClick={() => {
+                    playPlaylist.mutateAsync(
+                      { href: playlist.uri,
+                        playbackDevice}
+                      )
+                    }}
                   disabled={!isDevices}
                 >
                   {playlist.name}
@@ -129,7 +150,7 @@ function Dashboard() {
           )}
         </div>
         <div className="flex flex-col justify-center w-full justify-self-center self-start col-2 row-3">
-          <Player playbackDevice={playbackDevice} accessToken={tokenQuery.data.accessToken}/>
+          <Player playbackDevice={playbackDevice} accessToken={tokenQuery.data.accessToken} isPlaying={isPlaying}/>
         </div>
       </div>
     </>
@@ -138,20 +159,20 @@ function Dashboard() {
 
 export default Dashboard;
 
-async function playPlaylist(href, accessToken, device) {
-  const endpoint = `https://api.spotify.com/v1/me/player/play?device_id=${device}`;
+// async function playPlaylist(href, accessToken, device) {
+//   const endpoint = `https://api.spotify.com/v1/me/player/play?device_id=${device}`;
 
-  const response = await axios.put(
-    `${endpoint}`,
-    {
-      context_uri: href,
-    },
-    {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    }
-  );
+//   const response = await axios.put(
+//     `${endpoint}`,
+//     {
+//       context_uri: href,
+//     },
+//     {
+//       headers: {
+//         Authorization: "Bearer " + accessToken,
+//       },
+//     }
+//   );
 
-  return response;
-}
+//   return response;
+// }
