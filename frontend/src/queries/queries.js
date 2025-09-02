@@ -166,3 +166,34 @@ export function useSkipTrack() {
   },
 })
 }
+
+export function usePreviousTrack() {
+  const { data } = useSpotifyToken();
+
+  const accessToken = data?.accessToken;
+  const queryClient = useQueryClient();
+
+  return useMutation({
+  mutationKey: ["previous"],
+  mutationFn: async ({ device }) => {
+    const endpoint = `https://api.spotify.com/v1/me/player/previous`;
+
+    const response = await axios.post(
+      `${endpoint}`,
+      {
+        device_id: device,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
+
+    return response;
+  },
+  onError: (error) => {
+    console.error("Failed to go back to previous track: ", error);
+  },
+})
+}

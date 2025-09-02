@@ -1,11 +1,12 @@
 import { IoMdPause, IoMdPlay, IoMdSkipBackward, IoMdSkipForward, IoMdVolumeHigh, IoMdVolumeLow } from "react-icons/io"
-import { usePausePlaylist, useResumePlayback, useSkipTrack } from "../queries/queries"
+import { usePausePlaylist, usePreviousTrack, useResumePlayback, useSkipTrack } from "../queries/queries"
 
 function PlayerButton({ icon, isPlaying, device }) {
 
     const pausePlayback = usePausePlaylist();
     const resumePlayback = useResumePlayback();
     const skipForward = useSkipTrack();
+    const previousTrack = usePreviousTrack();
 
 
     switch (icon) {
@@ -16,7 +17,7 @@ function PlayerButton({ icon, isPlaying, device }) {
         case "forward":
             return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out" disabled={skipForward.isPending} onClick={() => skipForward.mutate({device})}><IoMdSkipForward /></button>
         case "backward":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out"><IoMdSkipBackward /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out" disabled={previousTrack.isPending} onClick={() => previousTrack.mutate({device})}><IoMdSkipBackward /></button>
         case "volumeUp":
             return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out"><IoMdVolumeHigh /></button>
         case "volumeDown":
