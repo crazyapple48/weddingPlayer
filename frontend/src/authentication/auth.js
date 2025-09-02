@@ -43,7 +43,7 @@ export function useSpotifyToken(refreshToken) {
     queryKey: ["spotify-token"],
     queryFn: async () => {
       if (!token) {
-        // window.location.href = "/login"
+        window.location.href = "/login"
         return null;
       }
 

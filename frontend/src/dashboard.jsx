@@ -8,7 +8,7 @@ import clsx from "clsx"
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
-  const [playbackDevice, setPlaybackDevice] = useState("");
+  const [playbackDevice, setPlaybackDevice] = useState(() => sessionStorage.getItem("deviceId"));
   const [isDevices, setIsDevices] = useState(false);
   const [currentPlaylistId, setCurrentPlaylistId] = useState(null)
 
@@ -47,6 +47,12 @@ function Dashboard() {
       setPlaybackDevice(devices[0].id);
     }
   }, [devices]);
+
+  useEffect(() => {
+    if (!!playbackDevice) {
+      sessionStorage.setItem("deviceId", playbackDevice.id)
+    }
+  }, [playbackDevice])
   
   if (playlistIsError) {
     return <span>Error: {playlistError.message}</span>;
