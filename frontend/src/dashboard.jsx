@@ -3,12 +3,14 @@ import { useGetDevices, useGetPlaylists, useSpotifyToken } from "./authenticatio
 import Player from "./player";
 import { useGetCurrentlyPlayingTrack } from "./authentication/auth";
 import { usePlayPlaylist } from "./queries/queries";
+import clsx from "clsx"
 
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
   const [playbackDevice, setPlaybackDevice] = useState("");
   const [isDevices, setIsDevices] = useState(false);
+  const [currentPlaylistId, setCurrentPlaylistId] = useState(null)
 
   if (tokenQuery.isError) {
     return <span>Error: {tokenQuery.error.message}</span>;
@@ -61,32 +63,6 @@ function Dashboard() {
   if (!playlists) {
     return <span>There are no playlists. Sorry bruh</span>
   }
-  // const playlistOrder = ["Set-up", "Pre-Ceremony", "They Kiss!", "Cocktail hour", "Dinner", "Wedding Jams", "Dessert Jams", "Wedding Jams 2"]
-
-  // const orderedPlaylists = playlistOrder.map((playlist) => {
-    
-  // })
-
-  // const filteredPlaylists = playlists?.filter((value, index, arr) => {
-  //   switch (value.name) {
-  //     case "Wedding Jams":
-  //       return true;
-  //     case "Cocktail hour":
-  //       return true;
-  //     case "Wedding Jams 2":
-  //       return true;
-  //     case "Dessert Jams":
-  //       return true;
-  //     case "Dinner":
-  //       return true;
-  //     case "They Kiss!":
-  //       return true;
-  //     case "Set-up":
-  //       return true;
-  //     case "Pre-Ceremony":
-  //       return true;
-  //   }
-  // });
 
   return (
     <>
@@ -119,19 +95,26 @@ function Dashboard() {
           {playlistPending ? (
             <span className="text-white">Loading...</span>
           ) : (
-            playlists.map((playlist) => {
+            playlists.map((playlist, index) => {
+              if (!currentPlaylistId && playlist.id) {
+                setCurrentPlaylistId(playlist.id)
+              }
+              const isCurrent = playlist.id === currentPlaylistId;
+              const isNext = index === playlists.findIndex(p => p.id === currentPlaylistId) + 1;
+
               return (
                 playlistPending ? <button>Playing Playlist....</button> :
                 <button
-                  className="rounded-lg bg-fuchsia-500 p-3 my-1 hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"
+                  className={clsx("rounded-lg bg-fuchsia-500 p-3 my-1 hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out", isNext && "bg-lime-500")}
                   key={playlist.href}
                   onClick={() => {
                     playPlaylist.mutateAsync(
                       { href: playlist.uri,
                         playbackDevice}
                       )
+                    setCurrentPlaylistId(playlist.id)  
                     }}
-                  disabled={!isDevices}
+                  disabled={!isDevices || isCurrent}
                 >
                   {playlist.name}
                 </button>

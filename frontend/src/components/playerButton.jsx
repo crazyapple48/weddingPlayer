@@ -8,17 +8,17 @@ function PlayerButton({ icon, isPlaying, device }) {
 
     switch (icon) {
         case "play":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={isPlaying} onClick={() => console.log("Play")}><IoMdPlay /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out" disabled={isPlaying} onClick={() => console.log("Play")}><IoMdPlay /></button>
         case "pause":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75" disabled={!isPlaying} onClick={() => pausePlayback.mutate({device})}><IoMdPause /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out" disabled={!isPlaying} onClick={() => pausePlayback.mutate({device})}><IoMdPause /></button>
         case "forward":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdSkipForward /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out"><IoMdSkipForward /></button>
         case "backward":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdSkipBackward /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out"><IoMdSkipBackward /></button>
         case "volumeUp":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdVolumeHigh /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out"><IoMdVolumeHigh /></button>
         case "volumeDown":
-            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75"><IoMdVolumeLow /></button>
+            return <button className="bg-fuchsia-500 rounded-full p-3 aspect-square hover:bg-fuchsia-800 disabled:opacity-25 disabled:bg-gray-300 active:scale-75 transition duration-300 ease-in-out"><IoMdVolumeLow /></button>
     }
 }
 
