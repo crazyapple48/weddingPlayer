@@ -61,13 +61,11 @@ export function usePausePlaylist() {
   return useMutation({
     mutationKey: ["pausePlayback"],
     mutationFn: async ({ device }) => {
-      const endpoint = `https://api.spotify.com/v1/me/player/pause`;
+      const endpoint = `https://api.spotify.com/v1/me/player/pause?device_id=${device}`;
 
       const response = await axios.put(
-        `${endpoint}`,
-        {
-          device_id: device,
-        },
+        endpoint,
+        null,
         {
           headers: {
             Authorization: "Bearer " + accessToken,
@@ -103,13 +101,11 @@ export function useResumePlayback() {
   return useMutation({
   mutationKey: ["resumePlayback"],
   mutationFn: async ({ device }) => {
-    const endpoint = `https://api.spotify.com/v1/me/player/play`;
+    const endpoint = `https://api.spotify.com/v1/me/player/play?device_id=${device}`;
 
     const response = await axios.put(
-      `${endpoint}`,
-      {
-        device_id: device,
-      },
+      endpoint,
+      null,
       {
         headers: {
           Authorization: "Bearer " + accessToken,
@@ -145,13 +141,11 @@ export function useSkipTrack() {
   return useMutation({
   mutationKey: ["skipForward"],
   mutationFn: async ({ device }) => {
-    const endpoint = `https://api.spotify.com/v1/me/player/next`;
+    const endpoint = `https://api.spotify.com/v1/me/player/next?device_id=${device}`;
 
     const response = await axios.post(
-      `${endpoint}`,
-      {
-        device_id: device,
-      },
+      endpoint,
+      null,
       {
         headers: {
           Authorization: "Bearer " + accessToken,
@@ -176,13 +170,11 @@ export function usePreviousTrack() {
   return useMutation({
   mutationKey: ["previous"],
   mutationFn: async ({ device }) => {
-    const endpoint = `https://api.spotify.com/v1/me/player/previous`;
+    const endpoint = `https://api.spotify.com/v1/me/player/previous?device_id=${device}`;
 
     const response = await axios.post(
-      `${endpoint}`,
-      {
-        device_id: device,
-      },
+      endpoint,
+      null,
       {
         headers: {
           Authorization: "Bearer " + accessToken,

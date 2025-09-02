@@ -57,7 +57,6 @@ app.post('/refresh', (req, res) => {
     })
 })
 
-
 const options = {
     key: fs.readFileSync('192.168.0.39+2-key.pem'),
     cert: fs.readFileSync('192.168.0.39+2.pem')

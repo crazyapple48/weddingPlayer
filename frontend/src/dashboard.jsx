@@ -8,7 +8,10 @@ import clsx from "clsx"
 function Dashboard() {
   const tokenQuery = useSpotifyToken();
 
-  const [playbackDevice, setPlaybackDevice] = useState(() => sessionStorage.getItem("deviceId"));
+  const [playbackDevice, setPlaybackDevice] = useState(() => {
+    const stored =  sessionStorage.getItem("device");
+    return stored ? JSON.parse(stored) : null;
+  });
   const [isDevices, setIsDevices] = useState(false);
   const [currentPlaylistId, setCurrentPlaylistId] = useState(null)
 
@@ -37,20 +40,21 @@ function Dashboard() {
   const playlists = playlistData?.data?.items;
   const devices = devicesData?.data?.devices ?? [];
   const isPlaying = playbackState?.data?.data?.is_playing
-  
+
+
   const playPlaylist = usePlayPlaylist();
   
 
   useEffect(() => {
     if (devices.length > 0 && !playbackDevice) {
       setIsDevices(true);
-      setPlaybackDevice(devices[0].id);
+      setPlaybackDevice(devices[0]);
     }
   }, [devices]);
 
   useEffect(() => {
-    if (!!playbackDevice) {
-      sessionStorage.setItem("deviceId", playbackDevice.id)
+    if (playbackDevice) {
+      sessionStorage.setItem("device", JSON.stringify(playbackDevice))
     }
   }, [playbackDevice])
   
@@ -73,24 +77,28 @@ function Dashboard() {
   return (
     <>
       <div className="grid grid-cols-[2fr_1fr] grid-rows-[2fr_1fr_6fr] items-center justify-center bg-black h-screen">
-        <div className="col-2 row-2 justify-self-end self-start pr-3">
+        <div className="flex flex-col col-2 row-2 justify-self-end self-start pr-3">
           {devicesPending ? (
             <span className="text-white">Loading....</span>
           ) : (
-            <select
-              className="bg-[#8833ff] p-2 rounded-lg"
-              onChange={(e) => setPlaybackDevice(e.target.value)}
-              onFocus={(e) => refetchDevices()}
-            >
-              {devices.map((device) => {
-                return (
-                  <option key={device.id} value={device.id}>
-                    {device.name}
-                  </option>
-                );
-              })}
-            </select>
+              <select
+                className="bg-[#8833ff] p-2 rounded-lg"
+                onChange={(e) => {
+                  const selected = devices.find(d => d.id === e.target.value)
+                  setPlaybackDevice(selected)
+                }}
+                onFocus={(e) => refetchDevices()}
+              >
+                {devices.map((device) => {
+                  return (
+                    <option key={device.id} value={device.id}>
+                      {device.name}
+                    </option>
+                  );
+                })}
+              </select>
           )}
+          { devicesPending ? <span className="text-white">Loading....</span> : <h1 className="text-white justify-self-end self-center">Device Volume: {playbackDevice?.volume_percent}</h1>}
         </div>
         <div className="col-1 row-1 col-span-2">
           <h1 className="text-3xl font-bold underline text-white justify-self-center">
@@ -116,7 +124,7 @@ function Dashboard() {
                   onClick={() => {
                     playPlaylist.mutateAsync(
                       { href: playlist.uri,
-                        playbackDevice}
+                        playbackDevice: playbackDevice.id}
                       )
                     setCurrentPlaylistId(playlist.id)  
                     }}
