@@ -6,6 +6,8 @@ export function useLogin(code) {
 
   return useMutation({
     mutationFn: async () => {
+      console.log(code);
+
       const result = await axios.post("/api/login", {
         code,
       });
