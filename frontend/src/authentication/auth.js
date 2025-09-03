@@ -6,7 +6,7 @@ export function useLogin(code) {
 
   return useMutation({
     mutationFn: async () => {
-      const result = await axios.post("https://192.168.0.39:3000/login", {
+      const result = await axios.post("/api/login", {
         code,
       });
       return result;
@@ -47,7 +47,7 @@ export function useSpotifyToken(refreshToken) {
         return null;
       }
 
-      const { data } = await axios.post("https://192.168.0.39:3000/refresh", {
+      const { data } = await axios.post("/api/refresh", {
         refreshToken: token,
       });
 
