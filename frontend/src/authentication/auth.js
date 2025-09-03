@@ -27,7 +27,6 @@ export function useLogin(code) {
     },
     onError: (error) => {
       console.error(error);
-      window.location.href = "/login"
     },
   });
 }
@@ -43,7 +42,6 @@ export function useSpotifyToken(refreshToken) {
     queryKey: ["spotify-token"],
     queryFn: async () => {
       if (!token) {
-        window.location.href = "/login"
         return null;
       }
 
@@ -74,7 +72,6 @@ export function useSpotifyToken(refreshToken) {
     refetchIntervalInBackground: true,
     onError: (err) => {
       console.error(err);
-      window.location.href = "/login"
     },
   });
 }
