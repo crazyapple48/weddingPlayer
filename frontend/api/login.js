@@ -22,7 +22,7 @@ export default async function handler(req, res) {
             expiresIn: data.body['expires_in']
         })
     } catch (err) {
-        console.err(err)
+        console.error(err)
         res.status(err.statusCode || 500).json({ error: err.message || "Login failed"})
     }
 }

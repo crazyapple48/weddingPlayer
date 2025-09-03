@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   const { refreshToken } = req.body
 
   const spotifyApi = new SpotifyWebApi({
-    redirectUri: process.env.SPOTIFY_REDIRECT_URI,
+    redirectUri: 'https://wedding-player-seven.vercel.app',
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     refreshToken,
