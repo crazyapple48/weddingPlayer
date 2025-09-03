@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5000 --host 192.168.0.39",
+    "dev": "vite --config vite.config.local.js --port 5000 --host 192.168.0.39",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
