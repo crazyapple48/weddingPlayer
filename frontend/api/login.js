@@ -7,6 +7,9 @@ export default async function handler(req, res) {
     }
 
     const { code } = req.body.code
+    if (!code) {
+        return res.status(400).json({ error: "Missing code"})
+    }
 
     const spotifyApi = new SpotifyWebApi({
         redirectUri: 'https://wedding-player-seven.vercel.app',

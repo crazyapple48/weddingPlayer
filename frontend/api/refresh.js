@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" })
   }
 
-  const { refreshToken } = req.body
+  const { refreshToken } = req.body.refreshToken
 
   const spotifyApi = new SpotifyWebApi({
     redirectUri: 'https://wedding-player-seven.vercel.app',
