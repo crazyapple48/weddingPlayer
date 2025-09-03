@@ -21,13 +21,13 @@ export function useLogin(code) {
       };
       queryClient.setQueryData(["spotify-token"], token);
 
-      localStorage.setItem("spotify-token", JSON.stringify(token));
+      sessionStorage.setItem("spotify-token", JSON.stringify(token));
 
       window.history.replaceState({}, document.title, "/");
     },
     onError: (error) => {
       console.error(error);
-      // window.location.href = "/login"
+      window.location.href = "/login"
     },
   });
 }
@@ -59,7 +59,7 @@ export function useSpotifyToken(refreshToken) {
     },
     onSuccess: (newToken) => {
       queryClient.setQueryData(["spotify-token"], newToken);
-      localStorage.setItem("spotify-token", JSON.stringify(newToken));
+      sessionStorage.setItem("spotify-token", JSON.stringify(newToken));
     },
     enabled: !!token,
     refetchInterval: (data) => {

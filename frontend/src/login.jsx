@@ -5,9 +5,15 @@ const AUTH_URL = "https://accounts.spotify.com/authorize?client_id=e762fb45d4bc4
 
 function Login() {
     return (
-        <dive className="" style={{ minHeight: "100vh" }}>
-            <a className="" href={AUTH_URL}>Login</a>
-        </dive>
+        <div className="flex items-center justify-center bg-black h-screen" style={{ minHeight: "100vh" }}>
+            <a href={AUTH_URL}>
+               <div className="flex items-center justify-center bg-fuchsia-500 p-5 rounded-md hover:bg-fuchsia-800 active:scale-75">
+                    <p className="">
+                        Login
+                    </p>
+                </div>
+            </a>
+        </div>
     )
 }
 

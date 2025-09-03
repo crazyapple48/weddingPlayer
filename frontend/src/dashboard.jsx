@@ -12,7 +12,6 @@ function Dashboard() {
     const stored =  sessionStorage.getItem("device");
     return stored ? JSON.parse(stored) : null;
   });
-  const [isDevices, setIsDevices] = useState(false);
   const [currentPlaylistId, setCurrentPlaylistId] = useState(null)
 
   if (tokenQuery.isError) {
@@ -47,7 +46,6 @@ function Dashboard() {
 
   useEffect(() => {
     if (devices.length > 0 && !playbackDevice) {
-      setIsDevices(true);
       setPlaybackDevice(devices[0]);
     }
   }, [devices]);
@@ -67,11 +65,7 @@ function Dashboard() {
   }
 
   if (!devices) {
-    return <span>Something went wrong</span>;
-  }
-
-  if (!playlists) {
-    return <span>There are no playlists. Sorry bruh</span>
+    return <span>There was a problem fetching devices</span>;
   }
 
   return (
@@ -128,7 +122,7 @@ function Dashboard() {
                       )
                     setCurrentPlaylistId(playlist.id)  
                     }}
-                  disabled={!isDevices || isCurrent}
+                  disabled={!playbackDevice || isCurrent}
                 >
                   {playlist.name}
                 </button>

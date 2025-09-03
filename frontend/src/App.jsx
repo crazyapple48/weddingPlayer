@@ -14,7 +14,7 @@ function App() {
   const [hydrated, setHydrated] = useState(false);
   
   useEffect(() => {
-    const storedToken = localStorage.getItem("spotify-token");
+    const storedToken = sessionStorage.getItem("spotify-token");
     if (storedToken) {
       queryClient.setQueryData(["spotify-token"], JSON.parse(storedToken))
     }
