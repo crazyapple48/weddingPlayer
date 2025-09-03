@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const { code } = req.body.code
 
     const spotifyApi = new SpotifyWebApi({
-        redirectUri: 'https://192.168.0.39:5000/callback',
+        redirectUri: 'https://wedding-player-seven.vercel.app',
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET
     })
