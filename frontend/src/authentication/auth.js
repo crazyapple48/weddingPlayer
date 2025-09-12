@@ -84,7 +84,7 @@ export function useGetPlaylists() {
   const { data } = useSpotifyToken();
 
   const accessToken = data?.accessToken;
-  const playlistOrder = ["Set-up", "Pre-Ceremony", "Ceremony-Start", "They Kiss!", "Cocktail hour", "Dinner", "Wedding Jams", "Dessert Jams", "Wedding Jams 2"]
+  const playlistOrder = ["Set-up", "Pre-Ceremony", "Ceremony-Start", "They Kiss!", "Cocktail hour", "Dinner", "First Dance", "Dessert Jams", "Wedding Jams"]
 
 
   return useQuery({
